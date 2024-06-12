@@ -4,22 +4,19 @@ from detectflow.validators.validator import Validator
 from detectflow.utils.s3.cfg import parse_s3_config
 
 
-class S3Validator(Validator):
+class S3Validator:
     def __init__(self, cfg_file: str = "/storage/brno2/home/chlupp/.s3.cfg"):
-
-        # Run the init method of Validator parent class
-        Validator.__init__(self)
-
+        """Initialize the S3 client."""
         self.endpoint_url, self.aws_access_key_id, self.aws_secret_access_key = parse_s3_config(cfg_file)
         region_name = 'eu-west-2'
 
         # Initialize the S3 client
         self.s3_client = boto3.client(
             's3',
-            endpoint_url='https://s3.cl4.du.cesnet.cz',
-            aws_access_key_id='EDB3Y8X810ZX24W82Y4E',
-            aws_secret_access_key='6YPzTiYjyPoCSVv82nt5Etw1plcMWmgqkDlDcfap',
-            region_name='eu-west-2'  # or your preferred region
+            endpoint_url=self.endpoint_url,
+            aws_access_key_id=self.aws_access_key_id,
+            aws_secret_access_key=self.aws_secret_access_key,
+            region_name=region_name  # or your preferred region
         )
 
     def is_s3_bucket(self, input_data):
